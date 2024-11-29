@@ -6,14 +6,14 @@ import numpy as np
 class SnackTrackDataset(Dataset):
     """Snack Track dataset."""
 
-    def __init__(self, metadata_dir, transform=None):
+    def __init__(self, metadata, transform=None):
         """
         Arguments:
             root_dir (string): Directory with all spectograms.
             transform (callable, optional): Optional transform to be applied
                 on a sample.
         """
-        self.metadata = pd.read_csv(metadata_dir)
+        self.metadata = metadata
         self.transform = transform 
 
     def __len__(self):
@@ -21,11 +21,13 @@ class SnackTrackDataset(Dataset):
 
     def __getitem__(self, idx):
         row = self.metadata.iloc[idx]
-        spectrogram = np.load(row["spectrogram_path"])  # Load spectrogram
+        spectrogram = np.load(row["spectrogram_path"])  # Load spectrogramd
         label = row["label"]
 
         # Map label to numeric
-        label_map = {"chewing": 1, "swallowing": 2, "others": 3, "resting": 4}
+        label_map = {"chewing": 0, "swallowing": 1, "others": 2, "resting": 3}
         label = label_map[label]
+
+        spectrogram = np.expand_dims(spectrogram, axis=0)  # Add channel dimension
 
         return (torch.tensor(spectrogram, dtype=torch.float32), label)
