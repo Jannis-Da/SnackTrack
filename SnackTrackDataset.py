@@ -6,20 +6,25 @@ import numpy as np
 class SnackTrackDataset(Dataset):
     """Snack Track dataset."""
 
-    def __init__(self, metadata, transform=None):
+    def __init__(self, metadata):
         """
-        Arguments:
-            root_dir (string): Directory with all spectograms.
-            transform (callable, optional): Optional transform to be applied
-                on a sample.
+        Args:
+            metadata: (np.array) Metadata of the dataset.
         """
         self.metadata = metadata
-        self.transform = transform 
 
     def __len__(self):
+        """
+        Returns length of the dataset.
+        """
         return len(self.metadata)
 
     def __getitem__(self, idx):
+        """
+        Returns a sample from the dataset.
+        Args:
+            idx: (int) Index of the sample.
+        """
         row = self.metadata.iloc[idx]
         spectrogram = np.load(row["spectrogram_path"])  # Load spectrogramd
         label = row["label"]
