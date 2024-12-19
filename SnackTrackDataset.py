@@ -26,7 +26,7 @@ class SnackTrackDataset(Dataset):
             idx: (int) Index of the sample.
         """
         row = self.metadata.iloc[idx]
-        spectrogram = np.load(row["spectrogram_path"])  # Load spectrogramd
+        spectrogram = np.load(row["spectrogram_path"])  # Load spectrogram
         label = row["label"]
 
         # Map label to numeric
